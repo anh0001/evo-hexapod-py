@@ -19,6 +19,7 @@ class LegModel:
     
     def make_leg(self, physics_client):
         """Create a leg in the physics simulation"""
+        # First create all bodies
         for i in range(NOJ + 1):
             # Create visual shape
             visual_shape_id = p.createVisualShape(
@@ -44,46 +45,58 @@ class LegModel:
                 basePosition=[0.0, y_pos, 0.0],
                 physicsClientId=physics_client
             )
+        
+        # First joint (index 0) is special - it will be created later when attaching to robot body
+        self.joint[0] = None
+        
+        # Now create joints between segments
+        for i in range(1, NOJ + 1):
+            # Set joint axis based on joint number
+            if i == 1:
+                joint_axis = [0, 1, 0]  # Y-axis rotation for first joint
+            else:
+                joint_axis = [1, 0, 0]  # X-axis rotation for other joints
             
-            # Create joints to connect body segments
-            if i > 0:
-                if i == 1:
-                    joint_axis = [0, 1, 0]  # Y-axis rotation for first joint
-                else:
-                    joint_axis = [1, 0, 0]  # X-axis rotation for other joints
-                
-                self.joint[i] = p.createConstraint(
-                    parentBodyUniqueId=self.body[i-1],
-                    parentLinkIndex=-1,
-                    childBodyUniqueId=self.body[i],
-                    childLinkIndex=-1,
-                    jointType=p.JOINT_REVOLUTE,
-                    jointAxis=joint_axis,
-                    parentFramePosition=[0, self.sides[1]/2, 0],  # Remove the "+ self.rest/2" term
-                    childFramePosition=[0, -self.sides[1]/2, 0],
-                    physicsClientId=physics_client
-                )
+            # Create joint with explicit pivot points
+            self.joint[i] = p.createConstraint(
+                parentBodyUniqueId=self.body[i-1],
+                parentLinkIndex=-1,
+                childBodyUniqueId=self.body[i],
+                childLinkIndex=-1,
+                jointType=p.JOINT_REVOLUTE,  # Revolute joint (hinge)
+                jointAxis=joint_axis,
+                # Position vectors in parent and child frames
+                parentFramePosition=[0.0, self.sides[1]/2 + self.rest/2, 0.0],
+                childFramePosition=[0.0, -self.sides[1]/2, 0.0],
+                # Identity quaternions
+                parentFrameOrientation=[0, 0, 0, 1],
+                childFrameOrientation=[0, 0, 0, 1],
+                physicsClientId=physics_client
+            )
     
     def translate(self, pos, R, physics_client):
         """Move the leg to a new position with rotation"""
+        # Convert rotation matrix format (from flat 3x4 to proper 3x3)
+        R_matrix = np.array(R).reshape(3, 4)[:3, :3]
+        quat = p.getQuaternionFromMatrix(R_matrix.flatten().tolist())
+        
         for i in range(NOJ + 1):
-            # Get current position
+            # Get current position relative to origin
             curr_pos, _ = p.getBasePositionAndOrientation(self.body[i], physicsClientId=physics_client)
             
-            # Create a proper rotation matrix from the input
-            R_matrix = np.array(R).reshape(3, 4)[:3, :3]  # Extract 3x3 rotation matrix
+            # Calculate relative position from first segment
+            base_pos = p.getBasePositionAndOrientation(self.body[0], physicsClientId=physics_client)[0]
+            rel_pos = np.array(curr_pos) - np.array(base_pos)
             
-            # Apply rotation to position
-            new_pos = R_matrix @ np.array(curr_pos)
+            # Apply rotation and add new base position
+            rotated_pos = R_matrix @ rel_pos
+            new_pos = np.array(pos) + rotated_pos
             
-            # Add translation
-            new_pos = new_pos + np.array(pos)
-            
-            # Set new position and orientation
+            # Update position and orientation
             p.resetBasePositionAndOrientation(
                 self.body[i],
                 new_pos.tolist(),
-                p.getQuaternionFromMatrix(R_matrix.tolist()),
+                quat,
                 physicsClientId=physics_client
             )
 
