@@ -213,7 +213,7 @@ def vega_main():
 
 def loco_main(tang, times):
     """Update locomotion based on genetic data"""
-    global gaj, times, posz
+    global gaj, posz
     global rp, rpp, ra, rap, rr, rrp
     
     # Get robot object (this would be passed in real implementation)

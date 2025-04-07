@@ -1,4 +1,4 @@
-# evo-hexapod-py
+# EVO Hexapod
 
 Evolutionary Hexapod Robot Simulation in Python
 
@@ -24,12 +24,18 @@ git clone https://github.com/yourusername/evo-hexapod-py.git
 cd evo-hexapod-py
 ```
 
-2. Install the required dependencies:
+2. Create and activate a Conda environment:
+```bash
+conda create --prefix hexapod-env python=3.9
+conda activate ./hexapod-env
+```
+
+3. Install the required dependencies:
 ```bash
 pip install -r requirements.txt
 ```
 
-3. Install the package (optional, for development):
+4. Install the package (optional, for development):
 ```bash
 pip install -e .
 ```
