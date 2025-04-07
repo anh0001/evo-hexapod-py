@@ -80,8 +80,11 @@ def vega_rank():
         k = 0
         
         # Find first unassigned individual
-        while gac[k] != -1:
+        while k < GAN and gac[k] != -1:
             k += 1
+        
+        if k >= GAN:
+            break  # All individuals already assigned
         
         # Find individual with highest fitness for criterion h
         for i in range(k+1, GAN):
@@ -107,8 +110,14 @@ def vega_main():
     
     # Find individuals in the current group
     g1 = 0
-    while gac[g1] != h:
+    while g1 < GAN and gac[g1] != h:
         g1 += 1
+    
+    if g1 >= GAN:
+        print(f"No individuals found for group {h}")
+        g1 = 0
+        gac[g1] = h
+    
     g2 = g1
     
     # Find worst and best individuals in group
@@ -213,14 +222,15 @@ def vega_main():
 
 def loco_main(tang, times):
     """Update locomotion based on genetic data"""
-    global gaj, posz
+    global gaj, posz, iteration
     global rp, rpp, ra, rap, rr, rrp
     
-    # Get robot object (this would be passed in real implementation)
-    from robot import robot
-    
+    # Increment counters
     times += 1
     gaj += 1
+    
+    # Import robot here to avoid circular imports
+    from robot import robot, get_base_position_and_orientation, get_base_rotation
     
     if times > timesmax:
         # Evaluation phase - calculate fitness for current individual
@@ -230,8 +240,8 @@ def loco_main(tang, times):
             rrp[i] = rr[i]
         
         # Get current position and orientation
-        pos0 = p.getBasePositionAndOrientation(robot.body)[0]
-        rot0 = p.getBaseRotation(robot.body)
+        pos0, _ = get_base_position_and_orientation(p)
+        rot0 = get_base_rotation(p)
         
         # Calculate rotation angle
         if rot0[4] == 0 and rot0[0] == 0:
@@ -293,7 +303,7 @@ def loco_main(tang, times):
               f"fit[2,R]: {fith[gai][2]:.3f}, pos-z: ({rot0[10]:.2f})")
         
         # Record best fitness for this generation
-        h = iteration + 1 if iteration < GAN else GAN
+        h = min(iteration + 1, GAN)
         for j in range(DOF):
             k = 0
             for i in range(h):
@@ -332,26 +342,27 @@ def loco_main(tang, times):
         
     else:
         # Normal movement - update target angles based on current posture sequence
-        gaj = gaj % thostl[gai]
-        
-        for j in range(NOJ):
-            for i in range(NOL):
-                if j == 0:  # Shoulder
-                    if i % 2 == 0:  # Legs 0, 2, 4
-                        if i < 3:
-                            tang[i][j] = rad(thost[gai][gaj][0][j])  # Legs 0, 2
+        if thostl[gai] > 0:  # Avoid division by zero
+            gaj = gaj % thostl[gai]
+            
+            for j in range(NOJ):
+                for i in range(NOL):
+                    if j == 0:  # Shoulder
+                        if i % 2 == 0:  # Legs 0, 2, 4
+                            if i < 3:
+                                tang[i][j] = rad(thost[gai][gaj][0][j])  # Legs 0, 2
+                            else:
+                                tang[i][j] = -rad(thost[gai][gaj][0][j])  # Leg 4
+                        else:  # Legs 1, 3, 5
+                            if i < 3:
+                                tang[i][j] = rad(thost[gai][gaj][1][j])  # Leg 1
+                            else:
+                                tang[i][j] = -rad(thost[gai][gaj][1][j])  # Legs 3, 5
+                    else:  # Elbow
+                        if i % 2 == 0:
+                            tang[i][j] = rad(thost[gai][gaj][0][j])  # Legs 0, 2, 4
                         else:
-                            tang[i][j] = -rad(thost[gai][gaj][0][j])  # Leg 4
-                    else:  # Legs 1, 3, 5
-                        if i < 3:
-                            tang[i][j] = rad(thost[gai][gaj][1][j])  # Leg 1
-                        else:
-                            tang[i][j] = -rad(thost[gai][gaj][1][j])  # Legs 3, 5
-                else:  # Elbow
-                    if i % 2 == 0:
-                        tang[i][j] = rad(thost[gai][gaj][0][j])  # Legs 0, 2, 4
-                    else:
-                        tang[i][j] = rad(thost[gai][gaj][1][j])  # Legs 1, 3, 5
+                            tang[i][j] = rad(thost[gai][gaj][1][j])  # Legs 1, 3, 5
     
     # Adjust for flipped orientation
     for i in range(NOL):

@@ -2,7 +2,9 @@ import pybullet as p
 import pybullet_data
 import time
 import numpy as np
-from robot import RobotModel, move_robot, release_robot
+import os
+
+from robot import robot, move_robot, release_robot
 from environment import Environment, create_ground
 from genetic import robot_init, tang, timesmax
 
@@ -57,9 +59,8 @@ class Simulation:
         )
         
         # Create robot
-        self.robot = RobotModel()
         try:
-            self.robot.make_robot(self.physics_client)
+            robot.make_robot(self.physics_client)
             print("Robot created successfully")
         except Exception as e:
             print(f"Error creating robot: {e}")
@@ -92,7 +93,7 @@ class Simulation:
         """Handler for 's' key to start robot movement"""
         if is_down:
             self.action = True
-            release_robot(self.robot, self.physics_client)
+            release_robot(self.physics_client)
             self.environment.obstacles_free(self.physics_client)
             print("Robot released - simulation started")
     
@@ -106,7 +107,7 @@ class Simulation:
         """Execute one step of the simulation"""
         if self.action:
             self.vel_counter, self.times = move_robot(
-                self.robot, tang, self.vel_counter, 
+                tang, self.vel_counter, 
                 self.times, self.physics_client
             )
             
