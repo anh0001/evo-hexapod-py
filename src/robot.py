@@ -47,7 +47,6 @@ class LegModel:
             
             # Create joints to connect body segments
             if i > 0:
-                hinge_pos = [(self.sides[1] + self.rest) * i - self.rest * 0.5]
                 if i == 1:
                     joint_axis = [0, 1, 0]  # Y-axis rotation for first joint
                 else:
@@ -60,7 +59,7 @@ class LegModel:
                     childLinkIndex=-1,
                     jointType=p.JOINT_REVOLUTE,
                     jointAxis=joint_axis,
-                    parentFramePosition=[0, self.sides[1]/2 + self.rest/2, 0],
+                    parentFramePosition=[0, self.sides[1]/2, 0],  # Remove the "+ self.rest/2" term
                     childFramePosition=[0, -self.sides[1]/2, 0],
                     physicsClientId=physics_client
                 )
@@ -71,8 +70,10 @@ class LegModel:
             # Get current position
             curr_pos, _ = p.getBasePositionAndOrientation(self.body[i], physicsClientId=physics_client)
             
-            # Apply rotation matrix R to current position
+            # Create a proper rotation matrix from the input
             R_matrix = np.array(R).reshape(3, 4)[:3, :3]  # Extract 3x3 rotation matrix
+            
+            # Apply rotation to position
             new_pos = R_matrix @ np.array(curr_pos)
             
             # Add translation
@@ -189,9 +190,13 @@ class RobotModel:
             [-self.px, -self.py, self.pz]
         ]
         
-        # Rotation matrices
-        self.Ri = [1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0]  # Identity
-        self.Rz = [-1.0, 0.0, 0.0, 0.0, 0.0, -1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0]  # 180° Z rotation
+        # Rotation matrices - fixed to ensure proper 3x4 format
+        self.Ri = [1.0, 0.0, 0.0, 0.0,
+                  0.0, 1.0, 0.0, 0.0,
+                  0.0, 0.0, 1.0, 0.0]  # Identity
+        self.Rz = [-1.0, 0.0, 0.0, 0.0,
+                  0.0, -1.0, 0.0, 0.0,
+                  0.0, 0.0, 1.0, 0.0]  # 180° Z rotation
     
     def make_robot(self, physics_client):
         """Create the complete robot in the physics simulation"""
