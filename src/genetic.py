@@ -245,12 +245,13 @@ def loco_main(tang, times):
         elif a < -math.pi:
             a += 2 * math.pi
         
-        # Calculate fitness components
+        # Calculate fitness components with more robust formulas
         f = [0.0] * 5
-        f[0] = math.exp(-a * a)  # Go straight
-        f[1] = math.exp(-(a + math.pi * 0.5) ** 2)  # Turn left
-        f[2] = math.exp(-(a - math.pi * 0.5) ** 2)  # Turn right
+        f[0] = math.exp(-a * a)  # Go straight - higher when angle change is small
+        f[1] = math.exp(-(a + math.pi * 0.5) ** 2)  # Turn left - higher when turning left
+        f[2] = math.exp(-(a - math.pi * 0.5) ** 2)  # Turn right - higher when turning right
         
+        # Save robot orientation
         rr[0] = rot0[0]
         rr[1] = rot0[4]
         
@@ -263,18 +264,20 @@ def loco_main(tang, times):
             rp[i] = pos0[i]
             v[i] = rp[i] - rpp[i]
             d += v[i] * v[i]
-            q += rr[i] * v[i]  # Inner product
+            q += rr[i] * v[i]  # Inner product between orientation and movement
         
         d = math.sqrt(d)  # Movement distance
-        if d != 0:
+        if d > 0.001:  # Avoid division by zero with threshold
             q = q / d  # Cosine of angle between movement and orientation
+        else:
+            q = 0.0  # No movement, so no direction
         
-        # Calculate fitness for each objective
-        fith[gai][0] = f[0] + d * 10 + q  # Forward movement
-        fith[gai][1] = f[1] * 20 + math.exp(-d * d)  # Left turn
-        fith[gai][2] = f[2] * 20 + math.exp(-d * d)  # Right turn
+        # Calculate fitness for each objective with balanced weights
+        fith[gai][0] = f[0] + d * 10 + q  # Forward movement: straight + distance + alignment
+        fith[gai][1] = f[1] * 20 + math.exp(-d * d)  # Left turn: turning + minimal distance
+        fith[gai][2] = f[2] * 20 + math.exp(-d * d)  # Right turn: turning + minimal distance
         
-        # Calculate total fitness
+        # Calculate total fitness as sum of individual objectives
         fith[gai][3] = sum(fith[gai][i] for i in range(DOF))
         
         # Check if robot is upside down

@@ -42,12 +42,28 @@ class Simulation:
             cameraTargetPosition=[0, 0, 0]
         )
         
-        # Create ground, robot, and environment
-        self.ground_id = create_ground(self.physics_client)
+        # Create ground plane
+        self.ground_id = p.createCollisionShape(
+            shapeType=p.GEOM_PLANE,
+            planeNormal=[0, 0, 1],
+            physicsClientId=self.physics_client
+        )
+        
+        p.createMultiBody(
+            baseMass=0,
+            baseCollisionShapeIndex=self.ground_id,
+            basePosition=[0, 0, 0],
+            physicsClientId=self.physics_client
+        )
         
         # Create robot
         self.robot = RobotModel()
-        self.robot.make_robot(self.physics_client)
+        try:
+            self.robot.make_robot(self.physics_client)
+            print("Robot created successfully")
+        except Exception as e:
+            print(f"Error creating robot: {e}")
+            raise
         
         # Create environment with obstacles
         self.environment = Environment()
@@ -89,12 +105,10 @@ class Simulation:
     def step_simulation(self):
         """Execute one step of the simulation"""
         if self.action:
-            self.vel_counter = move_robot(self.robot, tang, self.vel_counter, self.times, self.physics_client)
-            # Update times counter - in original code this was part of loco_main but we handle it here
-            if self.vel_counter == 0:
-                self.times = 0  # Reset times counter when loco_main resets the vel_counter
-            else:
-                self.times = (self.times + 1) % timesmax
+            self.vel_counter, self.times = move_robot(
+                self.robot, tang, self.vel_counter, 
+                self.times, self.physics_client
+            )
             
         # Step the simulation
         p.stepSimulation(self.physics_client)

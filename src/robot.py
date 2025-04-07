@@ -57,22 +57,32 @@ class LegModel:
             else:
                 joint_axis = [1, 0, 0]  # X-axis rotation for other joints
             
-            # Create joint with explicit pivot points
-            self.joint[i] = p.createConstraint(
-                parentBodyUniqueId=self.body[i-1],
-                parentLinkIndex=-1,
-                childBodyUniqueId=self.body[i],
-                childLinkIndex=-1,
-                jointType=p.JOINT_REVOLUTE,  # Revolute joint (hinge)
-                jointAxis=joint_axis,
-                # Position vectors in parent and child frames
-                parentFramePosition=[0.0, self.sides[1]/2 + self.rest/2, 0.0],
-                childFramePosition=[0.0, -self.sides[1]/2, 0.0],
-                # Identity quaternions
-                parentFrameOrientation=[0, 0, 0, 1],
-                childFrameOrientation=[0, 0, 0, 1],
-                physicsClientId=physics_client
-            )
+            # Calculate joint position
+            h_pos = (self.sides[1] + self.rest) * i - self.rest * 0.5
+            
+            # Create joint - simpler approach with minimal parameters
+            try:
+                self.joint[i] = p.createConstraint(
+                    parentBodyUniqueId=self.body[i-1],
+                    parentLinkIndex=-1,
+                    childBodyUniqueId=self.body[i],
+                    childLinkIndex=-1,
+                    jointType=p.JOINT_HINGE,  # Use HINGE instead of REVOLUTE
+                    jointAxis=joint_axis,
+                    parentFramePosition=[0.0, self.sides[1]/2, 0.0],
+                    childFramePosition=[0.0, -self.sides[1]/2, 0.0],
+                    physicsClientId=physics_client
+                )
+                
+                # Set joint limits and motor
+                p.changeConstraint(
+                    self.joint[i],
+                    maxForce=10.0,
+                    physicsClientId=physics_client
+                )
+            except Exception as e:
+                print(f"Error creating joint {i}: {e}")
+                raise
     
     def translate(self, pos, R, physics_client):
         """Move the leg to a new position with rotation"""
