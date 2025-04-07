@@ -222,7 +222,7 @@ def vega_main():
 
 def loco_main(tang, times):
     """Update locomotion based on genetic data"""
-    global gaj, posz, iteration
+    global gaj, posz, iteration, gai  # Added gai to globals
     global rp, rpp, ra, rap, rr, rrp
     
     # Increment counters
