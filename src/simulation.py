@@ -78,33 +78,32 @@ class Simulation:
         self.times = 0
         self.action = False
         
-        # Key bindings
-        self.register_key_handlers()
+        # Print instructions
+        print("Press 's' to start robot movement")
+        print("Press 'x' to exit simulation")
     
-    def register_key_handlers(self):
-        """Set up keyboard event handlers"""
-        # Register 's' key for starting simulation
-        p.registerKeyCallback(ord('s'), self._on_start_key)
+    def process_keyboard_events(self):
+        """Process keyboard events"""
+        keys = p.getKeyboardEvents()
         
-        # Register 'x' key for exiting
-        p.registerKeyCallback(ord('x'), self._on_exit_key)
-    
-    def _on_start_key(self, key, is_down):
-        """Handler for 's' key to start robot movement"""
-        if is_down:
+        # Check for 's' key press (ASCII 115)
+        if 115 in keys and keys[115] & p.KEY_WAS_TRIGGERED:
             self.action = True
             release_robot(self.physics_client)
             self.environment.obstacles_free(self.physics_client)
             print("Robot released - simulation started")
-    
-    def _on_exit_key(self, key, is_down):
-        """Handler for 'x' key to exit simulation"""
-        if is_down:
+        
+        # Check for 'x' key press (ASCII 120)
+        if 120 in keys and keys[120] & p.KEY_WAS_TRIGGERED:
+            print("Exiting simulation")
             p.disconnect(self.physics_client)
             exit(0)
     
     def step_simulation(self):
         """Execute one step of the simulation"""
+        # Process keyboard events
+        self.process_keyboard_events()
+        
         if self.action:
             self.vel_counter, self.times = move_robot(
                 tang, self.vel_counter, 
@@ -132,8 +131,6 @@ def main():
     """Entry point for the simulation"""
     sim = Simulation()
     print("Simulation initialized.")
-    print("Press 's' to start robot movement")
-    print("Press 'x' to exit simulation")
     sim.run()
 
 
