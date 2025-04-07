@@ -107,9 +107,8 @@
     <origin xyz="0.1 -0.1 0.05" rpy="0 0 0"/>
   </joint>
 
-  <!-- Legs -->
-  <!-- Front Left Leg (leg 0) -->
-  <link name="leg_0_body0">
+  <!-- ===================== LEG 0 (Front Left) ===================== -->
+  <link name="leg0_body0">
     <visual>
       <geometry>
         <box size="0.1 0.2 0.1"/>
@@ -127,13 +126,13 @@
     </inertial>
   </link>
 
-  <joint name="leg_0_joint0" type="fixed">
+  <joint name="motor_front_leftL_joint" type="fixed">
     <parent link="body"/>
-    <child link="leg_0_body0"/>
-    <origin xyz="0.45 0.2 -0.1" rpy="0 0 0"/>
+    <child link="leg0_body0"/>
+    <origin xyz="0.45 0.2 0" rpy="0 0 0"/>
   </joint>
 
-  <link name="leg_0_body1">
+  <link name="leg0_body1">
     <visual>
       <geometry>
         <box size="0.1 0.2 0.1"/>
@@ -151,16 +150,16 @@
     </inertial>
   </link>
 
-  <joint name="leg_0_joint1" type="revolute">
-    <parent link="leg_0_body0"/>
-    <child link="leg_0_body1"/>
+  <joint name="motor_front_leftR_joint" type="revolute">
+    <parent link="leg0_body0"/>
+    <child link="leg0_body1"/>
     <origin xyz="0 0.12 0" rpy="0 0 0"/>
     <axis xyz="0 1 0"/>
     <limit lower="-0.79" upper="0.79" effort="10" velocity="1"/>
     <dynamics damping="0.7"/>
   </joint>
 
-  <link name="leg_0_body2">
+  <link name="leg0_body2">
     <visual>
       <geometry>
         <box size="0.1 0.2 0.1"/>
@@ -178,16 +177,17 @@
     </inertial>
   </link>
 
-  <joint name="leg_0_joint2" type="revolute">
-    <parent link="leg_0_body1"/>
-    <child link="leg_0_body2"/>
+  <joint name="knee_front_leftL_link" type="revolute">
+    <parent link="leg0_body1"/>
+    <child link="leg0_body2"/>
     <origin xyz="0 0.12 0" rpy="0 0 0"/>
     <axis xyz="1 0 0"/>
     <limit lower="0" upper="1.05" effort="10" velocity="1"/>
     <dynamics damping="0.7"/>
   </joint>
 
-  <link name="leg_0_body3">
+  <!-- ===================== LEG 1 (Middle Left) ===================== -->
+  <link name="leg1_body0">
     <visual>
       <geometry>
         <box size="0.1 0.2 0.1"/>
@@ -205,41 +205,13 @@
     </inertial>
   </link>
 
-  <joint name="leg_0_joint3" type="revolute">
-    <parent link="leg_0_body2"/>
-    <child link="leg_0_body3"/>
-    <origin xyz="0 0.12 0" rpy="0 0 0"/>
-    <axis xyz="1 0 0"/>
-    <limit lower="0" upper="1.05" effort="10" velocity="1"/>
-    <dynamics damping="0.7"/>
-  </joint>
-
-  <!-- Middle Left Leg (leg 1) -->
-  <link name="leg_1_body0">
-    <visual>
-      <geometry>
-        <box size="0.1 0.2 0.1"/>
-      </geometry>
-      <material name="leg_color"/>
-    </visual>
-    <collision>
-      <geometry>
-        <box size="0.1 0.2 0.1"/>
-      </geometry>
-    </collision>
-    <inertial>
-      <mass value="0.05"/>
-      <inertia ixx="0.0001" ixy="0.0" ixz="0.0" iyy="0.0001" iyz="0.0" izz="0.0001"/>
-    </inertial>
-  </link>
-
-  <joint name="leg_1_joint0" type="fixed">
+  <joint name="motor_front_leftL_joint2" type="fixed">
     <parent link="body"/>
-    <child link="leg_1_body0"/>
-    <origin xyz="0 0.2 -0.1" rpy="0 0 0"/>
+    <child link="leg1_body0"/>
+    <origin xyz="0 0.2 0" rpy="0 0 0"/>
   </joint>
 
-  <link name="leg_1_body1">
+  <link name="leg1_body1">
     <visual>
       <geometry>
         <box size="0.1 0.2 0.1"/>
@@ -257,16 +229,16 @@
     </inertial>
   </link>
 
-  <joint name="leg_1_joint1" type="revolute">
-    <parent link="leg_1_body0"/>
-    <child link="leg_1_body1"/>
+  <joint name="motor_front_leftR_joint2" type="revolute">
+    <parent link="leg1_body0"/>
+    <child link="leg1_body1"/>
     <origin xyz="0 0.12 0" rpy="0 0 0"/>
     <axis xyz="0 1 0"/>
     <limit lower="-0.79" upper="0.79" effort="10" velocity="1"/>
     <dynamics damping="0.7"/>
   </joint>
 
-  <link name="leg_1_body2">
+  <link name="leg1_body2">
     <visual>
       <geometry>
         <box size="0.1 0.2 0.1"/>
@@ -284,16 +256,17 @@
     </inertial>
   </link>
 
-  <joint name="leg_1_joint2" type="revolute">
-    <parent link="leg_1_body1"/>
-    <child link="leg_1_body2"/>
+  <joint name="knee_front_leftR_link" type="revolute">
+    <parent link="leg1_body1"/>
+    <child link="leg1_body2"/>
     <origin xyz="0 0.12 0" rpy="0 0 0"/>
     <axis xyz="1 0 0"/>
     <limit lower="0" upper="1.05" effort="10" velocity="1"/>
     <dynamics damping="0.7"/>
   </joint>
 
-  <link name="leg_1_body3">
+  <!-- ===================== LEG 2 (Back Left) ===================== -->
+  <link name="leg2_body0">
     <visual>
       <geometry>
         <box size="0.1 0.2 0.1"/>
@@ -311,41 +284,13 @@
     </inertial>
   </link>
 
-  <joint name="leg_1_joint3" type="revolute">
-    <parent link="leg_1_body2"/>
-    <child link="leg_1_body3"/>
-    <origin xyz="0 0.12 0" rpy="0 0 0"/>
-    <axis xyz="1 0 0"/>
-    <limit lower="0" upper="1.05" effort="10" velocity="1"/>
-    <dynamics damping="0.7"/>
-  </joint>
-
-  <!-- Rear Left Leg (leg 2) -->
-  <link name="leg_2_body0">
-    <visual>
-      <geometry>
-        <box size="0.1 0.2 0.1"/>
-      </geometry>
-      <material name="leg_color"/>
-    </visual>
-    <collision>
-      <geometry>
-        <box size="0.1 0.2 0.1"/>
-      </geometry>
-    </collision>
-    <inertial>
-      <mass value="0.05"/>
-      <inertia ixx="0.0001" ixy="0.0" ixz="0.0" iyy="0.0001" iyz="0.0" izz="0.0001"/>
-    </inertial>
-  </link>
-
-  <joint name="leg_2_joint0" type="fixed">
+  <joint name="motor_back_leftL_joint" type="fixed">
     <parent link="body"/>
-    <child link="leg_2_body0"/>
-    <origin xyz="-0.45 0.2 -0.1" rpy="0 0 0"/>
+    <child link="leg2_body0"/>
+    <origin xyz="-0.45 0.2 0" rpy="0 0 0"/>
   </joint>
 
-  <link name="leg_2_body1">
+  <link name="leg2_body1">
     <visual>
       <geometry>
         <box size="0.1 0.2 0.1"/>
@@ -363,16 +308,16 @@
     </inertial>
   </link>
 
-  <joint name="leg_2_joint1" type="revolute">
-    <parent link="leg_2_body0"/>
-    <child link="leg_2_body1"/>
+  <joint name="motor_back_leftR_joint" type="revolute">
+    <parent link="leg2_body0"/>
+    <child link="leg2_body1"/>
     <origin xyz="0 0.12 0" rpy="0 0 0"/>
     <axis xyz="0 1 0"/>
     <limit lower="-0.79" upper="0.79" effort="10" velocity="1"/>
     <dynamics damping="0.7"/>
   </joint>
 
-  <link name="leg_2_body2">
+  <link name="leg2_body2">
     <visual>
       <geometry>
         <box size="0.1 0.2 0.1"/>
@@ -390,16 +335,17 @@
     </inertial>
   </link>
 
-  <joint name="leg_2_joint2" type="revolute">
-    <parent link="leg_2_body1"/>
-    <child link="leg_2_body2"/>
+  <joint name="knee_back_leftL_link" type="revolute">
+    <parent link="leg2_body1"/>
+    <child link="leg2_body2"/>
     <origin xyz="0 0.12 0" rpy="0 0 0"/>
     <axis xyz="1 0 0"/>
     <limit lower="0" upper="1.05" effort="10" velocity="1"/>
     <dynamics damping="0.7"/>
   </joint>
 
-  <link name="leg_2_body3">
+  <!-- ===================== LEG 3 (Front Right) ===================== -->
+  <link name="leg3_body0">
     <visual>
       <geometry>
         <box size="0.1 0.2 0.1"/>
@@ -417,41 +363,13 @@
     </inertial>
   </link>
 
-  <joint name="leg_2_joint3" type="revolute">
-    <parent link="leg_2_body2"/>
-    <child link="leg_2_body3"/>
-    <origin xyz="0 0.12 0" rpy="0 0 0"/>
-    <axis xyz="1 0 0"/>
-    <limit lower="0" upper="1.05" effort="10" velocity="1"/>
-    <dynamics damping="0.7"/>
-  </joint>
-
-  <!-- Front Right Leg (leg 3) -->
-  <link name="leg_3_body0">
-    <visual>
-      <geometry>
-        <box size="0.1 0.2 0.1"/>
-      </geometry>
-      <material name="leg_color"/>
-    </visual>
-    <collision>
-      <geometry>
-        <box size="0.1 0.2 0.1"/>
-      </geometry>
-    </collision>
-    <inertial>
-      <mass value="0.05"/>
-      <inertia ixx="0.0001" ixy="0.0" ixz="0.0" iyy="0.0001" iyz="0.0" izz="0.0001"/>
-    </inertial>
-  </link>
-
-  <joint name="leg_3_joint0" type="fixed">
+  <joint name="motor_front_rightL_joint" type="fixed">
     <parent link="body"/>
-    <child link="leg_3_body0"/>
-    <origin xyz="0.45 -0.2 -0.1" rpy="0 0 3.14159"/>
+    <child link="leg3_body0"/>
+    <origin xyz="0.45 -0.2 0" rpy="0 0 3.14159"/>
   </joint>
 
-  <link name="leg_3_body1">
+  <link name="leg3_body1">
     <visual>
       <geometry>
         <box size="0.1 0.2 0.1"/>
@@ -469,16 +387,16 @@
     </inertial>
   </link>
 
-  <joint name="leg_3_joint1" type="revolute">
-    <parent link="leg_3_body0"/>
-    <child link="leg_3_body1"/>
+  <joint name="motor_front_rightR_joint" type="revolute">
+    <parent link="leg3_body0"/>
+    <child link="leg3_body1"/>
     <origin xyz="0 0.12 0" rpy="0 0 0"/>
     <axis xyz="0 1 0"/>
     <limit lower="-0.79" upper="0.79" effort="10" velocity="1"/>
     <dynamics damping="0.7"/>
   </joint>
 
-  <link name="leg_3_body2">
+  <link name="leg3_body2">
     <visual>
       <geometry>
         <box size="0.1 0.2 0.1"/>
@@ -496,16 +414,17 @@
     </inertial>
   </link>
 
-  <joint name="leg_3_joint2" type="revolute">
-    <parent link="leg_3_body1"/>
-    <child link="leg_3_body2"/>
+  <joint name="knee_front_rightL_link" type="revolute">
+    <parent link="leg3_body1"/>
+    <child link="leg3_body2"/>
     <origin xyz="0 0.12 0" rpy="0 0 0"/>
     <axis xyz="1 0 0"/>
     <limit lower="0" upper="1.05" effort="10" velocity="1"/>
     <dynamics damping="0.7"/>
   </joint>
 
-  <link name="leg_3_body3">
+  <!-- ===================== LEG 4 (Middle Right) ===================== -->
+  <link name="leg4_body0">
     <visual>
       <geometry>
         <box size="0.1 0.2 0.1"/>
@@ -523,41 +442,13 @@
     </inertial>
   </link>
 
-  <joint name="leg_3_joint3" type="revolute">
-    <parent link="leg_3_body2"/>
-    <child link="leg_3_body3"/>
-    <origin xyz="0 0.12 0" rpy="0 0 0"/>
-    <axis xyz="1 0 0"/>
-    <limit lower="0" upper="1.05" effort="10" velocity="1"/>
-    <dynamics damping="0.7"/>
-  </joint>
-
-  <!-- Middle Right Leg (leg 4) -->
-  <link name="leg_4_body0">
-    <visual>
-      <geometry>
-        <box size="0.1 0.2 0.1"/>
-      </geometry>
-      <material name="leg_color"/>
-    </visual>
-    <collision>
-      <geometry>
-        <box size="0.1 0.2 0.1"/>
-      </geometry>
-    </collision>
-    <inertial>
-      <mass value="0.05"/>
-      <inertia ixx="0.0001" ixy="0.0" ixz="0.0" iyy="0.0001" iyz="0.0" izz="0.0001"/>
-    </inertial>
-  </link>
-
-  <joint name="leg_4_joint0" type="fixed">
+  <joint name="motor_back_rightL_joint2" type="fixed">
     <parent link="body"/>
-    <child link="leg_4_body0"/>
-    <origin xyz="0 -0.2 -0.1" rpy="0 0 3.14159"/>
+    <child link="leg4_body0"/>
+    <origin xyz="0 -0.2 0" rpy="0 0 3.14159"/>
   </joint>
 
-  <link name="leg_4_body1">
+  <link name="leg4_body1">
     <visual>
       <geometry>
         <box size="0.1 0.2 0.1"/>
@@ -575,16 +466,16 @@
     </inertial>
   </link>
 
-  <joint name="leg_4_joint1" type="revolute">
-    <parent link="leg_4_body0"/>
-    <child link="leg_4_body1"/>
+  <joint name="motor_back_rightR_joint2" type="revolute">
+    <parent link="leg4_body0"/>
+    <child link="leg4_body1"/>
     <origin xyz="0 0.12 0" rpy="0 0 0"/>
     <axis xyz="0 1 0"/>
     <limit lower="-0.79" upper="0.79" effort="10" velocity="1"/>
     <dynamics damping="0.7"/>
   </joint>
 
-  <link name="leg_4_body2">
+  <link name="leg4_body2">
     <visual>
       <geometry>
         <box size="0.1 0.2 0.1"/>
@@ -602,16 +493,17 @@
     </inertial>
   </link>
 
-  <joint name="leg_4_joint2" type="revolute">
-    <parent link="leg_4_body1"/>
-    <child link="leg_4_body2"/>
+  <joint name="knee_front_rightR_link" type="revolute">
+    <parent link="leg4_body1"/>
+    <child link="leg4_body2"/>
     <origin xyz="0 0.12 0" rpy="0 0 0"/>
     <axis xyz="1 0 0"/>
     <limit lower="0" upper="1.05" effort="10" velocity="1"/>
     <dynamics damping="0.7"/>
   </joint>
 
-  <link name="leg_4_body3">
+  <!-- ===================== LEG 5 (Back Right) ===================== -->
+  <link name="leg5_body0">
     <visual>
       <geometry>
         <box size="0.1 0.2 0.1"/>
@@ -629,41 +521,13 @@
     </inertial>
   </link>
 
-  <joint name="leg_4_joint3" type="revolute">
-    <parent link="leg_4_body2"/>
-    <child link="leg_4_body3"/>
-    <origin xyz="0 0.12 0" rpy="0 0 0"/>
-    <axis xyz="1 0 0"/>
-    <limit lower="0" upper="1.05" effort="10" velocity="1"/>
-    <dynamics damping="0.7"/>
-  </joint>
-
-  <!-- Rear Right Leg (leg 5) -->
-  <link name="leg_5_body0">
-    <visual>
-      <geometry>
-        <box size="0.1 0.2 0.1"/>
-      </geometry>
-      <material name="leg_color"/>
-    </visual>
-    <collision>
-      <geometry>
-        <box size="0.1 0.2 0.1"/>
-      </geometry>
-    </collision>
-    <inertial>
-      <mass value="0.05"/>
-      <inertia ixx="0.0001" ixy="0.0" ixz="0.0" iyy="0.0001" iyz="0.0" izz="0.0001"/>
-    </inertial>
-  </link>
-
-  <joint name="leg_5_joint0" type="fixed">
+  <joint name="motor_back_rightL_joint" type="fixed">
     <parent link="body"/>
-    <child link="leg_5_body0"/>
-    <origin xyz="-0.45 -0.2 -0.1" rpy="0 0 3.14159"/>
+    <child link="leg5_body0"/>
+    <origin xyz="-0.45 -0.2 0" rpy="0 0 3.14159"/>
   </joint>
 
-  <link name="leg_5_body1">
+  <link name="leg5_body1">
     <visual>
       <geometry>
         <box size="0.1 0.2 0.1"/>
@@ -681,16 +545,16 @@
     </inertial>
   </link>
 
-  <joint name="leg_5_joint1" type="revolute">
-    <parent link="leg_5_body0"/>
-    <child link="leg_5_body1"/>
+  <joint name="motor_back_rightR_joint" type="revolute">
+    <parent link="leg5_body0"/>
+    <child link="leg5_body1"/>
     <origin xyz="0 0.12 0" rpy="0 0 0"/>
     <axis xyz="0 1 0"/>
     <limit lower="-0.79" upper="0.79" effort="10" velocity="1"/>
     <dynamics damping="0.7"/>
   </joint>
 
-  <link name="leg_5_body2">
+  <link name="leg5_body2">
     <visual>
       <geometry>
         <box size="0.1 0.2 0.1"/>
@@ -708,36 +572,9 @@
     </inertial>
   </link>
 
-  <joint name="leg_5_joint2" type="revolute">
-    <parent link="leg_5_body1"/>
-    <child link="leg_5_body2"/>
-    <origin xyz="0 0.12 0" rpy="0 0 0"/>
-    <axis xyz="1 0 0"/>
-    <limit lower="0" upper="1.05" effort="10" velocity="1"/>
-    <dynamics damping="0.7"/>
-  </joint>
-
-  <link name="leg_5_body3">
-    <visual>
-      <geometry>
-        <box size="0.1 0.2 0.1"/>
-      </geometry>
-      <material name="leg_color"/>
-    </visual>
-    <collision>
-      <geometry>
-        <box size="0.1 0.2 0.1"/>
-      </geometry>
-    </collision>
-    <inertial>
-      <mass value="0.05"/>
-      <inertia ixx="0.0001" ixy="0.0" ixz="0.0" iyy="0.0001" iyz="0.0" izz="0.0001"/>
-    </inertial>
-  </link>
-
-  <joint name="leg_5_joint3" type="revolute">
-    <parent link="leg_5_body2"/>
-    <child link="leg_5_body3"/>
+  <joint name="knee_back_rightR_link" type="revolute">
+    <parent link="leg5_body1"/>
+    <child link="leg5_body2"/>
     <origin xyz="0 0.12 0" rpy="0 0 0"/>
     <axis xyz="1 0 0"/>
     <limit lower="0" upper="1.05" effort="10" velocity="1"/>
