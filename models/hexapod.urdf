@@ -126,7 +126,7 @@
     </inertial>
   </link>
 
-  <joint name="motor_front_leftL_joint" type="fixed">
+  <joint name="motor_front_left_base_joint" type="fixed">
     <parent link="body"/>
     <child link="leg0_body0"/>
     <origin xyz="0.45 0.2 0" rpy="0 0 0"/>
@@ -150,7 +150,7 @@
     </inertial>
   </link>
 
-  <joint name="motor_front_leftR_joint" type="revolute">
+  <joint name="motor_front_left_joint" type="revolute">
     <parent link="leg0_body0"/>
     <child link="leg0_body1"/>
     <origin xyz="0 0.12 0" rpy="0 0 0"/>
@@ -177,7 +177,7 @@
     </inertial>
   </link>
 
-  <joint name="knee_front_leftL_link" type="revolute">
+  <joint name="knee_front_left_joint" type="revolute">
     <parent link="leg0_body1"/>
     <child link="leg0_body2"/>
     <origin xyz="0 0.12 0" rpy="0 0 0"/>
@@ -205,7 +205,7 @@
     </inertial>
   </link>
 
-  <joint name="motor_front_leftL_joint2" type="fixed">
+  <joint name="motor_middle_left_base_joint" type="fixed">
     <parent link="body"/>
     <child link="leg1_body0"/>
     <origin xyz="0 0.2 0" rpy="0 0 0"/>
@@ -229,7 +229,7 @@
     </inertial>
   </link>
 
-  <joint name="motor_front_leftR_joint2" type="revolute">
+  <joint name="motor_middle_left_joint" type="revolute">
     <parent link="leg1_body0"/>
     <child link="leg1_body1"/>
     <origin xyz="0 0.12 0" rpy="0 0 0"/>
@@ -256,7 +256,7 @@
     </inertial>
   </link>
 
-  <joint name="knee_front_leftR_link" type="revolute">
+  <joint name="knee_middle_left_joint" type="revolute">
     <parent link="leg1_body1"/>
     <child link="leg1_body2"/>
     <origin xyz="0 0.12 0" rpy="0 0 0"/>
@@ -284,7 +284,7 @@
     </inertial>
   </link>
 
-  <joint name="motor_back_leftL_joint" type="fixed">
+  <joint name="motor_back_left_base_joint" type="fixed">
     <parent link="body"/>
     <child link="leg2_body0"/>
     <origin xyz="-0.45 0.2 0" rpy="0 0 0"/>
@@ -308,7 +308,7 @@
     </inertial>
   </link>
 
-  <joint name="motor_back_leftR_joint" type="revolute">
+  <joint name="motor_back_left_joint" type="revolute">
     <parent link="leg2_body0"/>
     <child link="leg2_body1"/>
     <origin xyz="0 0.12 0" rpy="0 0 0"/>
@@ -335,7 +335,7 @@
     </inertial>
   </link>
 
-  <joint name="knee_back_leftL_link" type="revolute">
+  <joint name="knee_back_left_joint" type="revolute">
     <parent link="leg2_body1"/>
     <child link="leg2_body2"/>
     <origin xyz="0 0.12 0" rpy="0 0 0"/>
@@ -363,7 +363,7 @@
     </inertial>
   </link>
 
-  <joint name="motor_front_rightL_joint" type="fixed">
+  <joint name="motor_front_right_base_joint" type="fixed">
     <parent link="body"/>
     <child link="leg3_body0"/>
     <origin xyz="0.45 -0.2 0" rpy="0 0 3.14159"/>
@@ -387,7 +387,7 @@
     </inertial>
   </link>
 
-  <joint name="motor_front_rightR_joint" type="revolute">
+  <joint name="motor_front_right_joint" type="revolute">
     <parent link="leg3_body0"/>
     <child link="leg3_body1"/>
     <origin xyz="0 0.12 0" rpy="0 0 0"/>
@@ -414,7 +414,7 @@
     </inertial>
   </link>
 
-  <joint name="knee_front_rightL_link" type="revolute">
+  <joint name="knee_front_right_joint" type="revolute">
     <parent link="leg3_body1"/>
     <child link="leg3_body2"/>
     <origin xyz="0 0.12 0" rpy="0 0 0"/>
@@ -442,7 +442,7 @@
     </inertial>
   </link>
 
-  <joint name="motor_back_rightL_joint2" type="fixed">
+  <joint name="motor_middle_right_base_joint" type="fixed">
     <parent link="body"/>
     <child link="leg4_body0"/>
     <origin xyz="0 -0.2 0" rpy="0 0 3.14159"/>
@@ -466,7 +466,7 @@
     </inertial>
   </link>
 
-  <joint name="motor_back_rightR_joint2" type="revolute">
+  <joint name="motor_middle_right_joint" type="revolute">
     <parent link="leg4_body0"/>
     <child link="leg4_body1"/>
     <origin xyz="0 0.12 0" rpy="0 0 0"/>
@@ -493,7 +493,7 @@
     </inertial>
   </link>
 
-  <joint name="knee_front_rightR_link" type="revolute">
+  <joint name="knee_middle_right_joint" type="revolute">
     <parent link="leg4_body1"/>
     <child link="leg4_body2"/>
     <origin xyz="0 0.12 0" rpy="0 0 0"/>
@@ -521,7 +521,7 @@
     </inertial>
   </link>
 
-  <joint name="motor_back_rightL_joint" type="fixed">
+  <joint name="motor_back_right_base_joint" type="fixed">
     <parent link="body"/>
     <child link="leg5_body0"/>
     <origin xyz="-0.45 -0.2 0" rpy="0 0 3.14159"/>
@@ -545,7 +545,7 @@
     </inertial>
   </link>
 
-  <joint name="motor_back_rightR_joint" type="revolute">
+  <joint name="motor_back_right_joint" type="revolute">
     <parent link="leg5_body0"/>
     <child link="leg5_body1"/>
     <origin xyz="0 0.12 0" rpy="0 0 0"/>
@@ -572,7 +572,7 @@
     </inertial>
   </link>
 
-  <joint name="knee_back_rightR_link" type="revolute">
+  <joint name="knee_back_right_joint" type="revolute">
     <parent link="leg5_body1"/>
     <child link="leg5_body2"/>
     <origin xyz="0 0.12 0" rpy="0 0 0"/>

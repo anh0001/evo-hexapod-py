@@ -7,6 +7,22 @@ import os
 NOL = 6  # Number of legs
 NOJ = 3  # Number of joints per leg
 
+# Joint name patterns for the six legs in our URDF
+JOINT_PATTERNS = [
+    # Front Left
+    ["motor_front_left_base_joint", "motor_front_left_joint", "knee_front_left_joint"],
+    # Middle Left
+    ["motor_middle_left_base_joint", "motor_middle_left_joint", "knee_middle_left_joint"],
+    # Back Left
+    ["motor_back_left_base_joint", "motor_back_left_joint", "knee_back_left_joint"],
+    # Front Right
+    ["motor_front_right_base_joint", "motor_front_right_joint", "knee_front_right_joint"],
+    # Middle Right
+    ["motor_middle_right_base_joint", "motor_middle_right_joint", "knee_middle_right_joint"],
+    # Back Right
+    ["motor_back_right_base_joint", "motor_back_right_joint", "knee_back_right_joint"]
+]
+
 class Robot:
     """Hexapod robot model using URDF"""
     
@@ -59,18 +75,26 @@ class Robot:
         """Build mapping between joint names and IDs"""
         num_joints = p.getNumJoints(self.body, physicsClientId=physics_client)
         
+        print(f"Robot has {num_joints} joints")
+        
+        # First, map all joints by name
         for i in range(num_joints):
             joint_info = p.getJointInfo(self.body, i, physicsClientId=physics_client)
             joint_name = joint_info[1].decode('utf-8')
             self.joint_map[joint_name] = i
-            
-            # Map leg joints to our array structure
-            for leg in range(NOL):
-                for joint in range(NOJ):
-                    if joint_name == f"leg{leg}_joint{joint+1}":
-                        self.leg_joint_ids[leg][joint] = i
+            print(f"Joint {i}: {joint_name}")
+        
+        # Then map the leg joints based on URDF patterns
+        for leg_idx, joint_names in enumerate(JOINT_PATTERNS):
+            for joint_idx, joint_name in enumerate(joint_names):
+                if joint_name in self.joint_map:
+                    self.leg_joint_ids[leg_idx][joint_idx] = self.joint_map[joint_name]
+                    print(f"Mapped leg {leg_idx}, joint {joint_idx} to '{joint_name}' (ID: {self.joint_map[joint_name]})")
+                else:
+                    print(f"Warning: Joint '{joint_name}' not found in URDF")
         
         print(f"Found {len(self.joint_map)} joints in the robot")
+        print(f"Leg joint mapping: {self.leg_joint_ids}")
 
 # Create a singleton instance
 robot = Robot()
@@ -103,8 +127,9 @@ def move_robot(tang, vel_counter, times, physics_client):
     # Apply controls to each joint
     for i in range(NOL):
         for j in range(NOJ):
-            if robot.leg_joint_ids[i][j] is not None:
-                p_control(robot.leg_joint_ids[i][j], tang[i][j], physics_client)
+            joint_id = robot.leg_joint_ids[i][j]
+            if joint_id is not None:
+                p_control(joint_id, tang[i][j], physics_client)
     
     # Update target joint angles periodically
     if vel_counter % samstep == 0:
@@ -116,7 +141,9 @@ def move_robot(tang, vel_counter, times, physics_client):
 
 def release_robot(physics_client):
     """Release the robot from fixed constraint"""
-    p.removeConstraint(robot.fixed, physicsClientId=physics_client)
+    if robot.fixed is not None:
+        p.removeConstraint(robot.fixed, physicsClientId=physics_client)
+        print("Robot released from fixed constraint")
 
 def get_base_position_and_orientation(physics_client):
     """Get the robot's base position and orientation"""
