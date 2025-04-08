@@ -1,26 +1,14 @@
 <?xml version="1.0"?>
 <robot name="hexapod">
-  <!-- Colors -->
-  <material name="body_color">
-    <color rgba="0.3 0.7 0.3 1.0"/>
-  </material>
-  <material name="head_color">
-    <color rgba="0.5 1.0 0.5 1.0"/>
-  </material>
-  <material name="leg_color">
-    <color rgba="0.2 0.4 0.2 1.0"/>
-  </material>
-  <material name="eye_color">
-    <color rgba="1.0 0.5 0.5 1.0"/>
-  </material>
-
-  <!-- Robot Body -->
-  <link name="body">
+  <!-- Main body -->
+  <link name="base_link">
     <visual>
       <geometry>
         <box size="1.0 0.4 0.2"/>
       </geometry>
-      <material name="body_color"/>
+      <material name="green">
+        <color rgba="0.3 0.7 0.3 1"/>
+      </material>
     </visual>
     <collision>
       <geometry>
@@ -29,7 +17,7 @@
     </collision>
     <inertial>
       <mass value="1.0"/>
-      <inertia ixx="0.01" ixy="0.0" ixz="0.0" iyy="0.05" iyz="0.0" izz="0.05"/>
+      <inertia ixx="0.01" ixy="0.0" ixz="0.0" iyy="0.01" iyz="0.0" izz="0.01"/>
     </inertial>
   </link>
 
@@ -39,7 +27,9 @@
       <geometry>
         <box size="0.2 0.2 0.1"/>
       </geometry>
-      <material name="head_color"/>
+      <material name="green_light">
+        <color rgba="0.5 1.0 0.5 1"/>
+      </material>
     </visual>
     <collision>
       <geometry>
@@ -52,19 +42,21 @@
     </inertial>
   </link>
 
-  <joint name="neck_j" type="fixed">
-    <parent link="body"/>
+  <joint name="head_joint" type="fixed">
+    <parent link="base_link"/>
     <child link="head"/>
     <origin xyz="0.5 0 0.15" rpy="0 0 0"/>
   </joint>
 
-  <!-- Eyes -->
-  <link name="eye_b0">
+  <!-- Eye (left) -->
+  <link name="eye_left">
     <visual>
       <geometry>
         <sphere radius="0.05"/>
       </geometry>
-      <material name="eye_color"/>
+      <material name="red">
+        <color rgba="1.0 0.5 0.5 1"/>
+      </material>
     </visual>
     <collision>
       <geometry>
@@ -77,18 +69,21 @@
     </inertial>
   </link>
 
-  <joint name="eye_j0" type="fixed">
+  <joint name="eye_left_joint" type="fixed">
     <parent link="head"/>
-    <child link="eye_b0"/>
+    <child link="eye_left"/>
     <origin xyz="0.1 0.1 0.05" rpy="0 0 0"/>
   </joint>
 
-  <link name="eye_b1">
+  <!-- Eye (right) -->
+  <link name="eye_right">
     <visual>
       <geometry>
         <sphere radius="0.05"/>
       </geometry>
-      <material name="eye_color"/>
+      <material name="red">
+        <color rgba="1.0 0.5 0.5 1"/>
+      </material>
     </visual>
     <collision>
       <geometry>
@@ -101,19 +96,25 @@
     </inertial>
   </link>
 
-  <joint name="eye_j1" type="fixed">
+  <joint name="eye_right_joint" type="fixed">
     <parent link="head"/>
-    <child link="eye_b1"/>
+    <child link="eye_right"/>
     <origin xyz="0.1 -0.1 0.05" rpy="0 0 0"/>
   </joint>
 
-  <!-- ===================== LEG 0 (Front Left) ===================== -->
-  <link name="leg0_body0">
+  <!-- ********************* -->
+  <!-- FRONT LEFT LEG (LEG 0) -->
+  <!-- ********************* -->
+  
+  <!-- Shoulder segment (first segment, connects to body) -->
+  <link name="shoulder_front_left">
     <visual>
       <geometry>
         <box size="0.1 0.2 0.1"/>
       </geometry>
-      <material name="leg_color"/>
+      <material name="green_dark">
+        <color rgba="0.2 0.4 0.2 1"/>
+      </material>
     </visual>
     <collision>
       <geometry>
@@ -122,49 +123,28 @@
     </collision>
     <inertial>
       <mass value="0.05"/>
-      <inertia ixx="0.0001" ixy="0.0" ixz="0.0" iyy="0.0001" iyz="0.0" izz="0.0001"/>
+      <inertia ixx="0.001" ixy="0.0" ixz="0.0" iyy="0.001" iyz="0.0" izz="0.001"/>
     </inertial>
   </link>
 
-  <joint name="motor_front_left_base_joint" type="fixed">
-    <parent link="body"/>
-    <child link="leg0_body0"/>
-    <origin xyz="0.45 0.2 0" rpy="0 0 0"/>
-  </joint>
-
-  <link name="leg0_body1">
-    <visual>
-      <geometry>
-        <box size="0.1 0.2 0.1"/>
-      </geometry>
-      <material name="leg_color"/>
-    </visual>
-    <collision>
-      <geometry>
-        <box size="0.1 0.2 0.1"/>
-      </geometry>
-    </collision>
-    <inertial>
-      <mass value="0.05"/>
-      <inertia ixx="0.0001" ixy="0.0" ixz="0.0" iyy="0.0001" iyz="0.0" izz="0.0001"/>
-    </inertial>
-  </link>
-
-  <joint name="motor_front_left_joint" type="revolute">
-    <parent link="leg0_body0"/>
-    <child link="leg0_body1"/>
-    <origin xyz="0 0.12 0" rpy="0 0 0"/>
+  <joint name="shoulder_front_left_joint" type="revolute">
+    <parent link="base_link"/>
+    <child link="shoulder_front_left"/>
+    <origin xyz="0.45 0.2 0.1" rpy="0 0 0"/>
     <axis xyz="0 1 0"/>
-    <limit lower="-0.79" upper="0.79" effort="10" velocity="1"/>
-    <dynamics damping="0.7"/>
+    <limit lower="-0.785" upper="0.785" effort="10" velocity="3"/>  <!-- +/- 45 degrees -->
+    <dynamics damping="0.5" friction="0.5"/>
   </joint>
 
-  <link name="leg0_body2">
+  <!-- Elbow segment (second segment) -->
+  <link name="elbow_front_left">
     <visual>
       <geometry>
         <box size="0.1 0.2 0.1"/>
       </geometry>
-      <material name="leg_color"/>
+      <material name="green_dark">
+        <color rgba="0.2 0.4 0.2 1"/>
+      </material>
     </visual>
     <collision>
       <geometry>
@@ -173,26 +153,62 @@
     </collision>
     <inertial>
       <mass value="0.05"/>
-      <inertia ixx="0.0001" ixy="0.0" ixz="0.0" iyy="0.0001" iyz="0.0" izz="0.0001"/>
+      <inertia ixx="0.001" ixy="0.0" ixz="0.0" iyy="0.001" iyz="0.0" izz="0.001"/>
+    </inertial>
+  </link>
+
+  <joint name="elbow_front_left_joint" type="revolute">
+    <parent link="shoulder_front_left"/>
+    <child link="elbow_front_left"/>
+    <origin xyz="0 0.24 0" rpy="0 0 0"/>
+    <axis xyz="1 0 0"/>
+    <limit lower="0" upper="1.047" effort="10" velocity="3"/>  <!-- 0 to 60 degrees -->
+    <dynamics damping="0.5" friction="0.5"/>
+  </joint>
+
+  <!-- Knee segment (third segment) -->
+  <link name="knee_front_left">
+    <visual>
+      <geometry>
+        <box size="0.1 0.2 0.1"/>
+      </geometry>
+      <material name="green_dark">
+        <color rgba="0.2 0.4 0.2 1"/>
+      </material>
+    </visual>
+    <collision>
+      <geometry>
+        <box size="0.1 0.2 0.1"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="0.05"/>
+      <inertia ixx="0.001" ixy="0.0" ixz="0.0" iyy="0.001" iyz="0.0" izz="0.001"/>
     </inertial>
   </link>
 
   <joint name="knee_front_left_joint" type="revolute">
-    <parent link="leg0_body1"/>
-    <child link="leg0_body2"/>
-    <origin xyz="0 0.12 0" rpy="0 0 0"/>
+    <parent link="elbow_front_left"/>
+    <child link="knee_front_left"/>
+    <origin xyz="0 0.24 0" rpy="0 0 0"/>
     <axis xyz="1 0 0"/>
-    <limit lower="0" upper="1.05" effort="10" velocity="1"/>
-    <dynamics damping="0.7"/>
+    <limit lower="0" upper="1.047" effort="10" velocity="3"/>  <!-- 0 to 60 degrees -->
+    <dynamics damping="0.5" friction="0.5"/>
   </joint>
 
-  <!-- ===================== LEG 1 (Middle Left) ===================== -->
-  <link name="leg1_body0">
+  <!-- ********************* -->
+  <!-- MIDDLE LEFT LEG (LEG 1) -->
+  <!-- ********************* -->
+  
+  <!-- Shoulder segment -->
+  <link name="shoulder_middle_left">
     <visual>
       <geometry>
         <box size="0.1 0.2 0.1"/>
       </geometry>
-      <material name="leg_color"/>
+      <material name="green_dark">
+        <color rgba="0.2 0.4 0.2 1"/>
+      </material>
     </visual>
     <collision>
       <geometry>
@@ -201,49 +217,28 @@
     </collision>
     <inertial>
       <mass value="0.05"/>
-      <inertia ixx="0.0001" ixy="0.0" ixz="0.0" iyy="0.0001" iyz="0.0" izz="0.0001"/>
+      <inertia ixx="0.001" ixy="0.0" ixz="0.0" iyy="0.001" iyz="0.0" izz="0.001"/>
     </inertial>
   </link>
 
-  <joint name="motor_middle_left_base_joint" type="fixed">
-    <parent link="body"/>
-    <child link="leg1_body0"/>
-    <origin xyz="0 0.2 0" rpy="0 0 0"/>
-  </joint>
-
-  <link name="leg1_body1">
-    <visual>
-      <geometry>
-        <box size="0.1 0.2 0.1"/>
-      </geometry>
-      <material name="leg_color"/>
-    </visual>
-    <collision>
-      <geometry>
-        <box size="0.1 0.2 0.1"/>
-      </geometry>
-    </collision>
-    <inertial>
-      <mass value="0.05"/>
-      <inertia ixx="0.0001" ixy="0.0" ixz="0.0" iyy="0.0001" iyz="0.0" izz="0.0001"/>
-    </inertial>
-  </link>
-
-  <joint name="motor_middle_left_joint" type="revolute">
-    <parent link="leg1_body0"/>
-    <child link="leg1_body1"/>
-    <origin xyz="0 0.12 0" rpy="0 0 0"/>
+  <joint name="shoulder_middle_left_joint" type="revolute">
+    <parent link="base_link"/>
+    <child link="shoulder_middle_left"/>
+    <origin xyz="0.0 0.2 0.1" rpy="0 0 0"/>
     <axis xyz="0 1 0"/>
-    <limit lower="-0.79" upper="0.79" effort="10" velocity="1"/>
-    <dynamics damping="0.7"/>
+    <limit lower="-0.785" upper="0.785" effort="10" velocity="3"/>  <!-- +/- 45 degrees -->
+    <dynamics damping="0.5" friction="0.5"/>
   </joint>
 
-  <link name="leg1_body2">
+  <!-- Elbow segment -->
+  <link name="elbow_middle_left">
     <visual>
       <geometry>
         <box size="0.1 0.2 0.1"/>
       </geometry>
-      <material name="leg_color"/>
+      <material name="green_dark">
+        <color rgba="0.2 0.4 0.2 1"/>
+      </material>
     </visual>
     <collision>
       <geometry>
@@ -252,26 +247,62 @@
     </collision>
     <inertial>
       <mass value="0.05"/>
-      <inertia ixx="0.0001" ixy="0.0" ixz="0.0" iyy="0.0001" iyz="0.0" izz="0.0001"/>
+      <inertia ixx="0.001" ixy="0.0" ixz="0.0" iyy="0.001" iyz="0.0" izz="0.001"/>
+    </inertial>
+  </link>
+
+  <joint name="elbow_middle_left_joint" type="revolute">
+    <parent link="shoulder_middle_left"/>
+    <child link="elbow_middle_left"/>
+    <origin xyz="0 0.24 0" rpy="0 0 0"/>
+    <axis xyz="1 0 0"/>
+    <limit lower="0" upper="1.047" effort="10" velocity="3"/>  <!-- 0 to 60 degrees -->
+    <dynamics damping="0.5" friction="0.5"/>
+  </joint>
+
+  <!-- Knee segment -->
+  <link name="knee_middle_left">
+    <visual>
+      <geometry>
+        <box size="0.1 0.2 0.1"/>
+      </geometry>
+      <material name="green_dark">
+        <color rgba="0.2 0.4 0.2 1"/>
+      </material>
+    </visual>
+    <collision>
+      <geometry>
+        <box size="0.1 0.2 0.1"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="0.05"/>
+      <inertia ixx="0.001" ixy="0.0" ixz="0.0" iyy="0.001" iyz="0.0" izz="0.001"/>
     </inertial>
   </link>
 
   <joint name="knee_middle_left_joint" type="revolute">
-    <parent link="leg1_body1"/>
-    <child link="leg1_body2"/>
-    <origin xyz="0 0.12 0" rpy="0 0 0"/>
+    <parent link="elbow_middle_left"/>
+    <child link="knee_middle_left"/>
+    <origin xyz="0 0.24 0" rpy="0 0 0"/>
     <axis xyz="1 0 0"/>
-    <limit lower="0" upper="1.05" effort="10" velocity="1"/>
-    <dynamics damping="0.7"/>
+    <limit lower="0" upper="1.047" effort="10" velocity="3"/>  <!-- 0 to 60 degrees -->
+    <dynamics damping="0.5" friction="0.5"/>
   </joint>
 
-  <!-- ===================== LEG 2 (Back Left) ===================== -->
-  <link name="leg2_body0">
+  <!-- ********************* -->
+  <!-- BACK LEFT LEG (LEG 2) -->
+  <!-- ********************* -->
+  
+  <!-- Shoulder segment -->
+  <link name="shoulder_back_left">
     <visual>
       <geometry>
         <box size="0.1 0.2 0.1"/>
       </geometry>
-      <material name="leg_color"/>
+      <material name="green_dark">
+        <color rgba="0.2 0.4 0.2 1"/>
+      </material>
     </visual>
     <collision>
       <geometry>
@@ -280,49 +311,28 @@
     </collision>
     <inertial>
       <mass value="0.05"/>
-      <inertia ixx="0.0001" ixy="0.0" ixz="0.0" iyy="0.0001" iyz="0.0" izz="0.0001"/>
+      <inertia ixx="0.001" ixy="0.0" ixz="0.0" iyy="0.001" iyz="0.0" izz="0.001"/>
     </inertial>
   </link>
 
-  <joint name="motor_back_left_base_joint" type="fixed">
-    <parent link="body"/>
-    <child link="leg2_body0"/>
-    <origin xyz="-0.45 0.2 0" rpy="0 0 0"/>
-  </joint>
-
-  <link name="leg2_body1">
-    <visual>
-      <geometry>
-        <box size="0.1 0.2 0.1"/>
-      </geometry>
-      <material name="leg_color"/>
-    </visual>
-    <collision>
-      <geometry>
-        <box size="0.1 0.2 0.1"/>
-      </geometry>
-    </collision>
-    <inertial>
-      <mass value="0.05"/>
-      <inertia ixx="0.0001" ixy="0.0" ixz="0.0" iyy="0.0001" iyz="0.0" izz="0.0001"/>
-    </inertial>
-  </link>
-
-  <joint name="motor_back_left_joint" type="revolute">
-    <parent link="leg2_body0"/>
-    <child link="leg2_body1"/>
-    <origin xyz="0 0.12 0" rpy="0 0 0"/>
+  <joint name="shoulder_back_left_joint" type="revolute">
+    <parent link="base_link"/>
+    <child link="shoulder_back_left"/>
+    <origin xyz="-0.45 0.2 0.1" rpy="0 0 0"/>
     <axis xyz="0 1 0"/>
-    <limit lower="-0.79" upper="0.79" effort="10" velocity="1"/>
-    <dynamics damping="0.7"/>
+    <limit lower="-0.785" upper="0.785" effort="10" velocity="3"/>  <!-- +/- 45 degrees -->
+    <dynamics damping="0.5" friction="0.5"/>
   </joint>
 
-  <link name="leg2_body2">
+  <!-- Elbow segment -->
+  <link name="elbow_back_left">
     <visual>
       <geometry>
         <box size="0.1 0.2 0.1"/>
       </geometry>
-      <material name="leg_color"/>
+      <material name="green_dark">
+        <color rgba="0.2 0.4 0.2 1"/>
+      </material>
     </visual>
     <collision>
       <geometry>
@@ -331,26 +341,62 @@
     </collision>
     <inertial>
       <mass value="0.05"/>
-      <inertia ixx="0.0001" ixy="0.0" ixz="0.0" iyy="0.0001" iyz="0.0" izz="0.0001"/>
+      <inertia ixx="0.001" ixy="0.0" ixz="0.0" iyy="0.001" iyz="0.0" izz="0.001"/>
+    </inertial>
+  </link>
+
+  <joint name="elbow_back_left_joint" type="revolute">
+    <parent link="shoulder_back_left"/>
+    <child link="elbow_back_left"/>
+    <origin xyz="0 0.24 0" rpy="0 0 0"/>
+    <axis xyz="1 0 0"/>
+    <limit lower="0" upper="1.047" effort="10" velocity="3"/>  <!-- 0 to 60 degrees -->
+    <dynamics damping="0.5" friction="0.5"/>
+  </joint>
+
+  <!-- Knee segment -->
+  <link name="knee_back_left">
+    <visual>
+      <geometry>
+        <box size="0.1 0.2 0.1"/>
+      </geometry>
+      <material name="green_dark">
+        <color rgba="0.2 0.4 0.2 1"/>
+      </material>
+    </visual>
+    <collision>
+      <geometry>
+        <box size="0.1 0.2 0.1"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="0.05"/>
+      <inertia ixx="0.001" ixy="0.0" ixz="0.0" iyy="0.001" iyz="0.0" izz="0.001"/>
     </inertial>
   </link>
 
   <joint name="knee_back_left_joint" type="revolute">
-    <parent link="leg2_body1"/>
-    <child link="leg2_body2"/>
-    <origin xyz="0 0.12 0" rpy="0 0 0"/>
+    <parent link="elbow_back_left"/>
+    <child link="knee_back_left"/>
+    <origin xyz="0 0.24 0" rpy="0 0 0"/>
     <axis xyz="1 0 0"/>
-    <limit lower="0" upper="1.05" effort="10" velocity="1"/>
-    <dynamics damping="0.7"/>
+    <limit lower="0" upper="1.047" effort="10" velocity="3"/>  <!-- 0 to 60 degrees -->
+    <dynamics damping="0.5" friction="0.5"/>
   </joint>
 
-  <!-- ===================== LEG 3 (Front Right) ===================== -->
-  <link name="leg3_body0">
+  <!-- ********************* -->
+  <!-- FRONT RIGHT LEG (LEG 3) -->
+  <!-- ********************* -->
+  
+  <!-- Shoulder segment -->
+  <link name="shoulder_front_right">
     <visual>
       <geometry>
         <box size="0.1 0.2 0.1"/>
       </geometry>
-      <material name="leg_color"/>
+      <material name="green_dark">
+        <color rgba="0.2 0.4 0.2 1"/>
+      </material>
     </visual>
     <collision>
       <geometry>
@@ -359,49 +405,28 @@
     </collision>
     <inertial>
       <mass value="0.05"/>
-      <inertia ixx="0.0001" ixy="0.0" ixz="0.0" iyy="0.0001" iyz="0.0" izz="0.0001"/>
+      <inertia ixx="0.001" ixy="0.0" ixz="0.0" iyy="0.001" iyz="0.0" izz="0.001"/>
     </inertial>
   </link>
 
-  <joint name="motor_front_right_base_joint" type="fixed">
-    <parent link="body"/>
-    <child link="leg3_body0"/>
-    <origin xyz="0.45 -0.2 0" rpy="0 0 3.14159"/>
-  </joint>
-
-  <link name="leg3_body1">
-    <visual>
-      <geometry>
-        <box size="0.1 0.2 0.1"/>
-      </geometry>
-      <material name="leg_color"/>
-    </visual>
-    <collision>
-      <geometry>
-        <box size="0.1 0.2 0.1"/>
-      </geometry>
-    </collision>
-    <inertial>
-      <mass value="0.05"/>
-      <inertia ixx="0.0001" ixy="0.0" ixz="0.0" iyy="0.0001" iyz="0.0" izz="0.0001"/>
-    </inertial>
-  </link>
-
-  <joint name="motor_front_right_joint" type="revolute">
-    <parent link="leg3_body0"/>
-    <child link="leg3_body1"/>
-    <origin xyz="0 0.12 0" rpy="0 0 0"/>
+  <joint name="shoulder_front_right_joint" type="revolute">
+    <parent link="base_link"/>
+    <child link="shoulder_front_right"/>
+    <origin xyz="0.45 -0.2 0.1" rpy="0 0 3.14159"/>
     <axis xyz="0 1 0"/>
-    <limit lower="-0.79" upper="0.79" effort="10" velocity="1"/>
-    <dynamics damping="0.7"/>
+    <limit lower="-0.785" upper="0.785" effort="10" velocity="3"/>  <!-- +/- 45 degrees -->
+    <dynamics damping="0.5" friction="0.5"/>
   </joint>
 
-  <link name="leg3_body2">
+  <!-- Elbow segment -->
+  <link name="elbow_front_right">
     <visual>
       <geometry>
         <box size="0.1 0.2 0.1"/>
       </geometry>
-      <material name="leg_color"/>
+      <material name="green_dark">
+        <color rgba="0.2 0.4 0.2 1"/>
+      </material>
     </visual>
     <collision>
       <geometry>
@@ -410,26 +435,62 @@
     </collision>
     <inertial>
       <mass value="0.05"/>
-      <inertia ixx="0.0001" ixy="0.0" ixz="0.0" iyy="0.0001" iyz="0.0" izz="0.0001"/>
+      <inertia ixx="0.001" ixy="0.0" ixz="0.0" iyy="0.001" iyz="0.0" izz="0.001"/>
+    </inertial>
+  </link>
+
+  <joint name="elbow_front_right_joint" type="revolute">
+    <parent link="shoulder_front_right"/>
+    <child link="elbow_front_right"/>
+    <origin xyz="0 0.24 0" rpy="0 0 0"/>
+    <axis xyz="1 0 0"/>
+    <limit lower="0" upper="1.047" effort="10" velocity="3"/>  <!-- 0 to 60 degrees -->
+    <dynamics damping="0.5" friction="0.5"/>
+  </joint>
+
+  <!-- Knee segment -->
+  <link name="knee_front_right">
+    <visual>
+      <geometry>
+        <box size="0.1 0.2 0.1"/>
+      </geometry>
+      <material name="green_dark">
+        <color rgba="0.2 0.4 0.2 1"/>
+      </material>
+    </visual>
+    <collision>
+      <geometry>
+        <box size="0.1 0.2 0.1"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="0.05"/>
+      <inertia ixx="0.001" ixy="0.0" ixz="0.0" iyy="0.001" iyz="0.0" izz="0.001"/>
     </inertial>
   </link>
 
   <joint name="knee_front_right_joint" type="revolute">
-    <parent link="leg3_body1"/>
-    <child link="leg3_body2"/>
-    <origin xyz="0 0.12 0" rpy="0 0 0"/>
+    <parent link="elbow_front_right"/>
+    <child link="knee_front_right"/>
+    <origin xyz="0 0.24 0" rpy="0 0 0"/>
     <axis xyz="1 0 0"/>
-    <limit lower="0" upper="1.05" effort="10" velocity="1"/>
-    <dynamics damping="0.7"/>
+    <limit lower="0" upper="1.047" effort="10" velocity="3"/>  <!-- 0 to 60 degrees -->
+    <dynamics damping="0.5" friction="0.5"/>
   </joint>
 
-  <!-- ===================== LEG 4 (Middle Right) ===================== -->
-  <link name="leg4_body0">
+  <!-- ********************* -->
+  <!-- MIDDLE RIGHT LEG (LEG 4) -->
+  <!-- ********************* -->
+  
+  <!-- Shoulder segment -->
+  <link name="shoulder_middle_right">
     <visual>
       <geometry>
         <box size="0.1 0.2 0.1"/>
       </geometry>
-      <material name="leg_color"/>
+      <material name="green_dark">
+        <color rgba="0.2 0.4 0.2 1"/>
+      </material>
     </visual>
     <collision>
       <geometry>
@@ -438,49 +499,28 @@
     </collision>
     <inertial>
       <mass value="0.05"/>
-      <inertia ixx="0.0001" ixy="0.0" ixz="0.0" iyy="0.0001" iyz="0.0" izz="0.0001"/>
+      <inertia ixx="0.001" ixy="0.0" ixz="0.0" iyy="0.001" iyz="0.0" izz="0.001"/>
     </inertial>
   </link>
 
-  <joint name="motor_middle_right_base_joint" type="fixed">
-    <parent link="body"/>
-    <child link="leg4_body0"/>
-    <origin xyz="0 -0.2 0" rpy="0 0 3.14159"/>
-  </joint>
-
-  <link name="leg4_body1">
-    <visual>
-      <geometry>
-        <box size="0.1 0.2 0.1"/>
-      </geometry>
-      <material name="leg_color"/>
-    </visual>
-    <collision>
-      <geometry>
-        <box size="0.1 0.2 0.1"/>
-      </geometry>
-    </collision>
-    <inertial>
-      <mass value="0.05"/>
-      <inertia ixx="0.0001" ixy="0.0" ixz="0.0" iyy="0.0001" iyz="0.0" izz="0.0001"/>
-    </inertial>
-  </link>
-
-  <joint name="motor_middle_right_joint" type="revolute">
-    <parent link="leg4_body0"/>
-    <child link="leg4_body1"/>
-    <origin xyz="0 0.12 0" rpy="0 0 0"/>
+  <joint name="shoulder_middle_right_joint" type="revolute">
+    <parent link="base_link"/>
+    <child link="shoulder_middle_right"/>
+    <origin xyz="0.0 -0.2 0.1" rpy="0 0 3.14159"/>
     <axis xyz="0 1 0"/>
-    <limit lower="-0.79" upper="0.79" effort="10" velocity="1"/>
-    <dynamics damping="0.7"/>
+    <limit lower="-0.785" upper="0.785" effort="10" velocity="3"/>  <!-- +/- 45 degrees -->
+    <dynamics damping="0.5" friction="0.5"/>
   </joint>
 
-  <link name="leg4_body2">
+  <!-- Elbow segment -->
+  <link name="elbow_middle_right">
     <visual>
       <geometry>
         <box size="0.1 0.2 0.1"/>
       </geometry>
-      <material name="leg_color"/>
+      <material name="green_dark">
+        <color rgba="0.2 0.4 0.2 1"/>
+      </material>
     </visual>
     <collision>
       <geometry>
@@ -489,26 +529,62 @@
     </collision>
     <inertial>
       <mass value="0.05"/>
-      <inertia ixx="0.0001" ixy="0.0" ixz="0.0" iyy="0.0001" iyz="0.0" izz="0.0001"/>
+      <inertia ixx="0.001" ixy="0.0" ixz="0.0" iyy="0.001" iyz="0.0" izz="0.001"/>
+    </inertial>
+  </link>
+
+  <joint name="elbow_middle_right_joint" type="revolute">
+    <parent link="shoulder_middle_right"/>
+    <child link="elbow_middle_right"/>
+    <origin xyz="0 0.24 0" rpy="0 0 0"/>
+    <axis xyz="1 0 0"/>
+    <limit lower="0" upper="1.047" effort="10" velocity="3"/>  <!-- 0 to 60 degrees -->
+    <dynamics damping="0.5" friction="0.5"/>
+  </joint>
+
+  <!-- Knee segment -->
+  <link name="knee_middle_right">
+    <visual>
+      <geometry>
+        <box size="0.1 0.2 0.1"/>
+      </geometry>
+      <material name="green_dark">
+        <color rgba="0.2 0.4 0.2 1"/>
+      </material>
+    </visual>
+    <collision>
+      <geometry>
+        <box size="0.1 0.2 0.1"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="0.05"/>
+      <inertia ixx="0.001" ixy="0.0" ixz="0.0" iyy="0.001" iyz="0.0" izz="0.001"/>
     </inertial>
   </link>
 
   <joint name="knee_middle_right_joint" type="revolute">
-    <parent link="leg4_body1"/>
-    <child link="leg4_body2"/>
-    <origin xyz="0 0.12 0" rpy="0 0 0"/>
+    <parent link="elbow_middle_right"/>
+    <child link="knee_middle_right"/>
+    <origin xyz="0 0.24 0" rpy="0 0 0"/>
     <axis xyz="1 0 0"/>
-    <limit lower="0" upper="1.05" effort="10" velocity="1"/>
-    <dynamics damping="0.7"/>
+    <limit lower="0" upper="1.047" effort="10" velocity="3"/>  <!-- 0 to 60 degrees -->
+    <dynamics damping="0.5" friction="0.5"/>
   </joint>
 
-  <!-- ===================== LEG 5 (Back Right) ===================== -->
-  <link name="leg5_body0">
+  <!-- ********************* -->
+  <!-- BACK RIGHT LEG (LEG 5) -->
+  <!-- ********************* -->
+  
+  <!-- Shoulder segment -->
+  <link name="shoulder_back_right">
     <visual>
       <geometry>
         <box size="0.1 0.2 0.1"/>
       </geometry>
-      <material name="leg_color"/>
+      <material name="green_dark">
+        <color rgba="0.2 0.4 0.2 1"/>
+      </material>
     </visual>
     <collision>
       <geometry>
@@ -517,49 +593,28 @@
     </collision>
     <inertial>
       <mass value="0.05"/>
-      <inertia ixx="0.0001" ixy="0.0" ixz="0.0" iyy="0.0001" iyz="0.0" izz="0.0001"/>
+      <inertia ixx="0.001" ixy="0.0" ixz="0.0" iyy="0.001" iyz="0.0" izz="0.001"/>
     </inertial>
   </link>
 
-  <joint name="motor_back_right_base_joint" type="fixed">
-    <parent link="body"/>
-    <child link="leg5_body0"/>
-    <origin xyz="-0.45 -0.2 0" rpy="0 0 3.14159"/>
-  </joint>
-
-  <link name="leg5_body1">
-    <visual>
-      <geometry>
-        <box size="0.1 0.2 0.1"/>
-      </geometry>
-      <material name="leg_color"/>
-    </visual>
-    <collision>
-      <geometry>
-        <box size="0.1 0.2 0.1"/>
-      </geometry>
-    </collision>
-    <inertial>
-      <mass value="0.05"/>
-      <inertia ixx="0.0001" ixy="0.0" ixz="0.0" iyy="0.0001" iyz="0.0" izz="0.0001"/>
-    </inertial>
-  </link>
-
-  <joint name="motor_back_right_joint" type="revolute">
-    <parent link="leg5_body0"/>
-    <child link="leg5_body1"/>
-    <origin xyz="0 0.12 0" rpy="0 0 0"/>
+  <joint name="shoulder_back_right_joint" type="revolute">
+    <parent link="base_link"/>
+    <child link="shoulder_back_right"/>
+    <origin xyz="-0.45 -0.2 0.1" rpy="0 0 3.14159"/>
     <axis xyz="0 1 0"/>
-    <limit lower="-0.79" upper="0.79" effort="10" velocity="1"/>
-    <dynamics damping="0.7"/>
+    <limit lower="-0.785" upper="0.785" effort="10" velocity="3"/>  <!-- +/- 45 degrees -->
+    <dynamics damping="0.5" friction="0.5"/>
   </joint>
 
-  <link name="leg5_body2">
+  <!-- Elbow segment -->
+  <link name="elbow_back_right">
     <visual>
       <geometry>
         <box size="0.1 0.2 0.1"/>
       </geometry>
-      <material name="leg_color"/>
+      <material name="green_dark">
+        <color rgba="0.2 0.4 0.2 1"/>
+      </material>
     </visual>
     <collision>
       <geometry>
@@ -568,17 +623,47 @@
     </collision>
     <inertial>
       <mass value="0.05"/>
-      <inertia ixx="0.0001" ixy="0.0" ixz="0.0" iyy="0.0001" iyz="0.0" izz="0.0001"/>
+      <inertia ixx="0.001" ixy="0.0" ixz="0.0" iyy="0.001" iyz="0.0" izz="0.001"/>
+    </inertial>
+  </link>
+
+  <joint name="elbow_back_right_joint" type="revolute">
+    <parent link="shoulder_back_right"/>
+    <child link="elbow_back_right"/>
+    <origin xyz="0 0.24 0" rpy="0 0 0"/>
+    <axis xyz="1 0 0"/>
+    <limit lower="0" upper="1.047" effort="10" velocity="3"/>  <!-- 0 to 60 degrees -->
+    <dynamics damping="0.5" friction="0.5"/>
+  </joint>
+
+  <!-- Knee segment -->
+  <link name="knee_back_right">
+    <visual>
+      <geometry>
+        <box size="0.1 0.2 0.1"/>
+      </geometry>
+      <material name="green_dark">
+        <color rgba="0.2 0.4 0.2 1"/>
+      </material>
+    </visual>
+    <collision>
+      <geometry>
+        <box size="0.1 0.2 0.1"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="0.05"/>
+      <inertia ixx="0.001" ixy="0.0" ixz="0.0" iyy="0.001" iyz="0.0" izz="0.001"/>
     </inertial>
   </link>
 
   <joint name="knee_back_right_joint" type="revolute">
-    <parent link="leg5_body1"/>
-    <child link="leg5_body2"/>
-    <origin xyz="0 0.12 0" rpy="0 0 0"/>
+    <parent link="elbow_back_right"/>
+    <child link="knee_back_right"/>
+    <origin xyz="0 0.24 0" rpy="0 0 0"/>
     <axis xyz="1 0 0"/>
-    <limit lower="0" upper="1.05" effort="10" velocity="1"/>
-    <dynamics damping="0.7"/>
+    <limit lower="0" upper="1.047" effort="10" velocity="3"/>  <!-- 0 to 60 degrees -->
+    <dynamics damping="0.5" friction="0.5"/>
   </joint>
 
 </robot>
