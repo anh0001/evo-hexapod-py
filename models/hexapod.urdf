@@ -130,7 +130,7 @@
   <joint name="shoulder_front_left_joint" type="revolute">
     <parent link="base_link"/>
     <child link="shoulder_front_left"/>
-    <origin xyz="0.45 0.2 0.1" rpy="0 0 0"/>
+    <origin xyz="0.45 0.2 0" rpy="0 0 0"/>
     <axis xyz="0 1 0"/>
     <limit lower="-0.785" upper="0.785" effort="10" velocity="3"/>  <!-- +/- 45 degrees -->
     <dynamics damping="0.5" friction="0.5"/>
@@ -224,7 +224,7 @@
   <joint name="shoulder_middle_left_joint" type="revolute">
     <parent link="base_link"/>
     <child link="shoulder_middle_left"/>
-    <origin xyz="0.0 0.2 0.1" rpy="0 0 0"/>
+    <origin xyz="0.0 0.2 0" rpy="0 0 0"/>
     <axis xyz="0 1 0"/>
     <limit lower="-0.785" upper="0.785" effort="10" velocity="3"/>  <!-- +/- 45 degrees -->
     <dynamics damping="0.5" friction="0.5"/>
@@ -318,7 +318,7 @@
   <joint name="shoulder_back_left_joint" type="revolute">
     <parent link="base_link"/>
     <child link="shoulder_back_left"/>
-    <origin xyz="-0.45 0.2 0.1" rpy="0 0 0"/>
+    <origin xyz="-0.45 0.2 0" rpy="0 0 0"/>
     <axis xyz="0 1 0"/>
     <limit lower="-0.785" upper="0.785" effort="10" velocity="3"/>  <!-- +/- 45 degrees -->
     <dynamics damping="0.5" friction="0.5"/>
@@ -412,7 +412,7 @@
   <joint name="shoulder_front_right_joint" type="revolute">
     <parent link="base_link"/>
     <child link="shoulder_front_right"/>
-    <origin xyz="0.45 -0.2 0.1" rpy="0 0 3.14159"/>
+    <origin xyz="0.45 -0.2 0" rpy="0 0 3.14159"/>
     <axis xyz="0 1 0"/>
     <limit lower="-0.785" upper="0.785" effort="10" velocity="3"/>  <!-- +/- 45 degrees -->
     <dynamics damping="0.5" friction="0.5"/>
@@ -506,7 +506,7 @@
   <joint name="shoulder_middle_right_joint" type="revolute">
     <parent link="base_link"/>
     <child link="shoulder_middle_right"/>
-    <origin xyz="0.0 -0.2 0.1" rpy="0 0 3.14159"/>
+    <origin xyz="0.0 -0.2 0" rpy="0 0 3.14159"/>
     <axis xyz="0 1 0"/>
     <limit lower="-0.785" upper="0.785" effort="10" velocity="3"/>  <!-- +/- 45 degrees -->
     <dynamics damping="0.5" friction="0.5"/>
@@ -600,7 +600,7 @@
   <joint name="shoulder_back_right_joint" type="revolute">
     <parent link="base_link"/>
     <child link="shoulder_back_right"/>
-    <origin xyz="-0.45 -0.2 0.1" rpy="0 0 3.14159"/>
+    <origin xyz="-0.45 -0.2 0" rpy="0 0 3.14159"/>
     <axis xyz="0 1 0"/>
     <limit lower="-0.785" upper="0.785" effort="10" velocity="3"/>  <!-- +/- 45 degrees -->
     <dynamics damping="0.5" friction="0.5"/>
