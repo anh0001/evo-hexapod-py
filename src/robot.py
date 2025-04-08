@@ -10,17 +10,17 @@ NOJ = 3  # Number of joints per leg
 # Joint name patterns for the six legs in our URDF
 JOINT_PATTERNS = [
     # Front Left
-    ["motor_front_left_base_joint", "motor_front_left_joint", "knee_front_left_joint"],
+    ["shoulder_front_left_joint", "elbow_front_left_joint", "knee_front_left_joint"],
     # Middle Left
-    ["motor_middle_left_base_joint", "motor_middle_left_joint", "knee_middle_left_joint"],
+    ["shoulder_middle_left_joint", "elbow_middle_left_joint", "knee_middle_left_joint"],
     # Back Left
-    ["motor_back_left_base_joint", "motor_back_left_joint", "knee_back_left_joint"],
+    ["shoulder_back_left_joint", "elbow_back_left_joint", "knee_back_left_joint"],
     # Front Right
-    ["motor_front_right_base_joint", "motor_front_right_joint", "knee_front_right_joint"],
+    ["shoulder_front_right_joint", "elbow_front_right_joint", "knee_front_right_joint"],
     # Middle Right
-    ["motor_middle_right_base_joint", "motor_middle_right_joint", "knee_middle_right_joint"],
+    ["shoulder_middle_right_joint", "elbow_middle_right_joint", "knee_middle_right_joint"],
     # Back Right
-    ["motor_back_right_base_joint", "motor_back_right_joint", "knee_back_right_joint"]
+    ["shoulder_back_right_joint", "elbow_back_right_joint", "knee_back_right_joint"]
 ]
 
 class Robot:
