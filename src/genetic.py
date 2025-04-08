@@ -291,7 +291,7 @@ def loco_main(tang, times, physics_client):
         fith[gai][3] = sum(fith[gai][i] for i in range(DOF))
         
         # Check if robot is upside down
-        if rot0[10] < -0.7:
+        if rot0[8] < -0.7:
             posz = -1
         else:
             posz = 1
@@ -300,7 +300,7 @@ def loco_main(tang, times, physics_client):
         print(f"[{gai}] walking distance: {d:.3f}, posture change: {a:.3f}, moving dir: {q:.3f}, "
               f"({rot0[0]:.2f}, {rot0[1]:.2f}, {rot0[2]:.2f})")
         print(f"Current fit[0,F]: {fith[gai][0]:.3f}, fit[1,L]: {fith[gai][1]:.3f}, "
-              f"fit[2,R]: {fith[gai][2]:.3f}, pos-z: ({rot0[10]:.2f})")
+              f"fit[2,R]: {fith[gai][2]:.3f}, pos-z: ({rot0[8]:.2f})")
         
         # Record best fitness for this generation
         h = min(iteration + 1, GAN)
