@@ -134,7 +134,7 @@ def move_robot(tang, vel_counter, times, physics_client):
     # Update target joint angles periodically
     if vel_counter % samstep == 0:
         from genetic import loco_main
-        times = loco_main(tang, times)
+        times = loco_main(tang, times, physics_client)  # updated: pass physics_client
         vel_counter = 0
     
     return vel_counter, times

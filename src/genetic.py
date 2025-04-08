@@ -220,7 +220,7 @@ def vega_main():
         gai = g2
 
 
-def loco_main(tang, times):
+def loco_main(tang, times, physics_client):
     """Update locomotion based on genetic data"""
     global gaj, posz, iteration, gai  # Added gai to globals
     global rp, rpp, ra, rap, rr, rrp
@@ -240,8 +240,8 @@ def loco_main(tang, times):
             rrp[i] = rr[i]
         
         # Get current position and orientation
-        pos0, _ = get_base_position_and_orientation(p)
-        rot0 = get_base_rotation(p)
+        pos0, _ = get_base_position_and_orientation(physics_client)  # updated: pass physics_client
+        rot0 = get_base_rotation(physics_client)                       # updated: pass physics_client
         
         # Calculate rotation angle
         if rot0[4] == 0 and rot0[0] == 0:
