@@ -161,7 +161,7 @@
     <parent link="shoulder_front_left"/>
     <child link="elbow_front_left"/>
     <origin xyz="0 0.24 0" rpy="0 0 0"/>
-    <axis xyz="1 0 0"/>
+    <axis xyz="-1 0 0"/>
     <limit lower="0" upper="1.047" effort="10" velocity="3"/>  <!-- 0 to 60 degrees -->
     <dynamics damping="0.5" friction="0.5"/>
   </joint>
@@ -191,7 +191,7 @@
     <parent link="elbow_front_left"/>
     <child link="knee_front_left"/>
     <origin xyz="0 0.24 0" rpy="0 0 0"/>
-    <axis xyz="1 0 0"/>
+    <axis xyz="-1 0 0"/>
     <limit lower="0" upper="1.047" effort="10" velocity="3"/>  <!-- 0 to 60 degrees -->
     <dynamics damping="0.5" friction="0.5"/>
   </joint>
@@ -255,7 +255,7 @@
     <parent link="shoulder_middle_left"/>
     <child link="elbow_middle_left"/>
     <origin xyz="0 0.24 0" rpy="0 0 0"/>
-    <axis xyz="1 0 0"/>
+    <axis xyz="-1 0 0"/>
     <limit lower="0" upper="1.047" effort="10" velocity="3"/>  <!-- 0 to 60 degrees -->
     <dynamics damping="0.5" friction="0.5"/>
   </joint>
@@ -285,7 +285,7 @@
     <parent link="elbow_middle_left"/>
     <child link="knee_middle_left"/>
     <origin xyz="0 0.24 0" rpy="0 0 0"/>
-    <axis xyz="1 0 0"/>
+    <axis xyz="-1 0 0"/>
     <limit lower="0" upper="1.047" effort="10" velocity="3"/>  <!-- 0 to 60 degrees -->
     <dynamics damping="0.5" friction="0.5"/>
   </joint>
@@ -349,7 +349,7 @@
     <parent link="shoulder_back_left"/>
     <child link="elbow_back_left"/>
     <origin xyz="0 0.24 0" rpy="0 0 0"/>
-    <axis xyz="1 0 0"/>
+    <axis xyz="-1 0 0"/>
     <limit lower="0" upper="1.047" effort="10" velocity="3"/>  <!-- 0 to 60 degrees -->
     <dynamics damping="0.5" friction="0.5"/>
   </joint>
@@ -379,7 +379,7 @@
     <parent link="elbow_back_left"/>
     <child link="knee_back_left"/>
     <origin xyz="0 0.24 0" rpy="0 0 0"/>
-    <axis xyz="1 0 0"/>
+    <axis xyz="-1 0 0"/>
     <limit lower="0" upper="1.047" effort="10" velocity="3"/>  <!-- 0 to 60 degrees -->
     <dynamics damping="0.5" friction="0.5"/>
   </joint>
@@ -443,7 +443,7 @@
     <parent link="shoulder_front_right"/>
     <child link="elbow_front_right"/>
     <origin xyz="0 0.24 0" rpy="0 0 0"/>
-    <axis xyz="1 0 0"/>
+    <axis xyz="-1 0 0"/>
     <limit lower="0" upper="1.047" effort="10" velocity="3"/>  <!-- 0 to 60 degrees -->
     <dynamics damping="0.5" friction="0.5"/>
   </joint>
@@ -473,7 +473,7 @@
     <parent link="elbow_front_right"/>
     <child link="knee_front_right"/>
     <origin xyz="0 0.24 0" rpy="0 0 0"/>
-    <axis xyz="1 0 0"/>
+    <axis xyz="-1 0 0"/>
     <limit lower="0" upper="1.047" effort="10" velocity="3"/>  <!-- 0 to 60 degrees -->
     <dynamics damping="0.5" friction="0.5"/>
   </joint>
@@ -537,7 +537,7 @@
     <parent link="shoulder_middle_right"/>
     <child link="elbow_middle_right"/>
     <origin xyz="0 0.24 0" rpy="0 0 0"/>
-    <axis xyz="1 0 0"/>
+    <axis xyz="-1 0 0"/>
     <limit lower="0" upper="1.047" effort="10" velocity="3"/>  <!-- 0 to 60 degrees -->
     <dynamics damping="0.5" friction="0.5"/>
   </joint>
@@ -567,7 +567,7 @@
     <parent link="elbow_middle_right"/>
     <child link="knee_middle_right"/>
     <origin xyz="0 0.24 0" rpy="0 0 0"/>
-    <axis xyz="1 0 0"/>
+    <axis xyz="-1 0 0"/>
     <limit lower="0" upper="1.047" effort="10" velocity="3"/>  <!-- 0 to 60 degrees -->
     <dynamics damping="0.5" friction="0.5"/>
   </joint>
@@ -631,7 +631,7 @@
     <parent link="shoulder_back_right"/>
     <child link="elbow_back_right"/>
     <origin xyz="0 0.24 0" rpy="0 0 0"/>
-    <axis xyz="1 0 0"/>
+    <axis xyz="-1 0 0"/>
     <limit lower="0" upper="1.047" effort="10" velocity="3"/>  <!-- 0 to 60 degrees -->
     <dynamics damping="0.5" friction="0.5"/>
   </joint>
@@ -661,7 +661,7 @@
     <parent link="elbow_back_right"/>
     <child link="knee_back_right"/>
     <origin xyz="0 0.24 0" rpy="0 0 0"/>
-    <axis xyz="1 0 0"/>
+    <axis xyz="-1 0 0"/>
     <limit lower="0" upper="1.047" effort="10" velocity="3"/>  <!-- 0 to 60 degrees -->
     <dynamics damping="0.5" friction="0.5"/>
   </joint>
