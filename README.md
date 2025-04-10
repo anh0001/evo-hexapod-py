@@ -2,11 +2,15 @@
 
 Evolutionary Hexapod Robot Simulation in Python
 
+<div align="center">
+  <img src="assets/main_image.png" alt="Main Image">
+</div>
+
 ## Overview
 
 This project is a Python implementation of an evolutionary robotics simulation for a six-legged (hexapod) robot. The robot learns to walk, turn left, and turn right through genetic algorithms, specifically using Vector Evaluated Genetic Algorithms (VEGA).
 
-The simulation uses PyBullet for physics and visualization, replacing the ODE (Open Dynamics Engine) and DrawStuff used in the original C++ implementation.
+The simulation uses PyBullet for physics and visualization, replacing the ODE (Open Dynamics Engine).
 
 ## Features
 
